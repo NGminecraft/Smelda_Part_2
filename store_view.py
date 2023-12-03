@@ -28,7 +28,7 @@ class Level:
         self.objects = self.initilize_map_dict()
         self.collision = self.initialize_collision()
         tileset = pygame.image.load(TILE_SET_LOCATION)
-        self.frogNPC = pygame.image.load("Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/NPCs/PNG/sprToadEatWithTongue.png")
+        self.frogNPC = pygame.image.load("Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Extra_Characters/PNG/sprToadEatWithTongue.png")
         print(self.frogNPC.get_width())
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
@@ -52,7 +52,6 @@ class Level:
             "Frog2": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(24, 0, 24, 24)), (30, 30)),
             "Frog3": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(48, 0, 24, 24)), (30, 30)),
             "Frog4": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(72, 0, 24, 24)), (30, 30))
-            
         }
         self.resize()
 

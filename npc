@@ -1,6 +1,6 @@
 import pygame
 
-class npc():
+class NPC():
     def __init__(self, model, location):
         self.model = model
         self.coords = location
