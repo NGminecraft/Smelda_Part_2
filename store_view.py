@@ -1,35 +1,47 @@
 import pygame
 import numpy
 import random
-import logging
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
 TILE_SET_LOCATION = "tileBaseTileset.png"
 
 
+def initialize_background():
+    # PyCharm gets mad if this isn't here
+    # This creates a background which is essentially each pixel being a random color in the BACK_COLORS list
+    background = []
+    for i in range(350):
+        layer1 = []
+        for j in range(350):
+            layer1.append(random.choice(BACK_COLORS))
+        background.append(layer1)
+    # I need to fix this array obsession
+    return numpy.asarray(background)
+
 
 class Level:
-    def __init__(self, player, map="map.npy", collision_map="BigMapCollision"):
-        self.logger = logging.getLogger(__name__)
-        self.map = map
-        self.keyframe = 1
+    def __init__(self, map_file="map.npy", collision_map="BigMapCollision"):
+        # Creates map from passed in map files
+        self.map = map_file
         self.collision_map = collision_map
-        self.player = player
-        self.backdrop = pygame.surfarray.make_surface(self.initialize_background())
-        self.characterN = pygame.image.load(
-            "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkN.png")
-        self.characterE = pygame.image.load(
-            "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkE.png")
-        self.characterS = pygame.image.load(
-            "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkS.png")
-        self.characterW = pygame.image.load(
-            "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png")
-        self.objects = self.initilize_map_dict()
+        # This gets a background from the background array (see: Level.initialize_background() for details)
+        self.backdrop = pygame.surfarray.make_surface(initialize_background())
+        self.backdrop = pygame.transform.scale(self.backdrop, (816, 816))
+        # This is predefining the center variable, which is used when placing the character
+        self.center = (384, 360)
+        # This initializes the dictionary that contains the map
+        self.level = self.initialize_map_dict()
+        # This initializes the dictionary for the collision in the map
         self.collision = self.initialize_collision()
+        # This is the variable that stores the tileset that's used for getting all the tile subsurfaces
         tileset = pygame.image.load(TILE_SET_LOCATION)
-        self.frogNPC = pygame.image.load("Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Extra_Characters/PNG/sprToadEatWithTongue.png")
-        print(self.frogNPC.get_width())
+        # This is the image for the frog npc that is used a couple of times, which sadly lost tile priveleges
+        self.frogNPC = pygame.image.load(
+            "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Extra_Characters/PNG/sprToadEatWithTongue.png")
+        #
+        # This is the dictionary that maps each tile name (str) to a subsurface that can be put on the string
+        # A number at the end of the string indicates that it is part of an animation (4 keyframes per, no exceptions)
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
             "Cabinet": pygame.transform.rotate(tileset.subsurface(pygame.Rect(513, 257, 30, 30)), 90),
@@ -53,24 +65,24 @@ class Level:
             "Frog3": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(48, 0, 24, 24)), (30, 30)),
             "Frog4": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(72, 0, 24, 24)), (30, 30))
         }
-        self.resize()
+        # This is the variable for storing the current keyframe for tiles with animations
+        self.keyframe = 1
 
-    def resize(self):
-        self.characterN = pygame.transform.scale_by(self.characterN, 3)
-        self.characterE = pygame.transform.scale_by(self.characterE, 3)
-        self.characterS = pygame.transform.scale_by(self.characterS, 3)
-        self.characterW = pygame.transform.scale_by(self.characterW, 3)
-        self.backdrop = pygame.transform.scale(self.backdrop, (816, 816))
-
-    def initilize_map_dict(self):
+    def initialize_map_dict(self):
+        # This takes the map file and returns the dictionary extrapolated from it.
+        # I have no idea why I leave this as a numpy array file. It works though and saves a bit of processing.
+        # This file is pregenerated, that's why it exists
         arr = numpy.load(self.map)
         dictionary = {}
+        # This iterates through the array from the numpy file, adding each item to a dictionary
         for row_num, row in enumerate(arr):
             for column_num, column in enumerate(row):
                 dictionary[(row_num * 30, column_num * 30)] = column
         return dictionary
-    
+
     def initialize_collision(self):
+        # This does the exact same as the map function but for collision instead
+        # They may potentially be merged later on
         carr = numpy.load(self.collision_map)
         dictionary = {}
         for row_num, row in enumerate(carr):
@@ -78,48 +90,56 @@ class Level:
                 dictionary[(row_num * 30, column_num * 30)] = column
         return dictionary
 
-    def initialize_background(self):
-        background = []
-        for i in range(350):
-            layer1 = []
-            for j in range(350):
-                layer1.append(random.choice(BACK_COLORS))
-            background.append(layer1)
-        return numpy.asarray(background)
-
     def draw_background(self, screen):
+        # It puts the background on the screen that's really it
         screen.blit(self.backdrop, (0, 0))
 
-    def draw_character(self, screen):
-        center = (screen.get_width() / 2 - self.characterN.get_width() / 4, screen.get_height() / 2 - self.characterN.get_height())
-        screen.blit(self.player.get_player(), center)
+    def draw_character(self, screen, player):
+        # This puts the character on the screen utilizing its builtin get player method
+        screen.blit(player.get_player(), self.center)
 
-    def check_for_items(self, screen):
-        coords = self.player.get_coords()
-        for key in reversed(self.objects):
+    def place_items(self, screen, player):
+        # This puts all the items on the screen in their locations in respect to the players location
+        coords = player.get_coords()
+        # This goes through every item, though when necessary will be modified to only render items in a certain area
+        # Around the player
+        for key in reversed(self.level):
+            # It will try to just place the current item on the screen
             try:
-                screen.blit(self.items[self.objects[key]], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
+                screen.blit(self.items[self.level[key]], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
             except KeyError:
+                # The KeyError either means I did something wrong, or the tile has an animation
                 self.keyframe += 0.006
-                object = self.objects[key]
-                object += str(round(self.keyframe))
+                item = self.level[key]
+                # This is a funky way of doing it. It takes the rounded version of whatever keyframe its on and appends
+                # It to the name of whatever it's trying to put on
+                item += str(round(self.keyframe))
+                # It will then attempt to put it that edited name on the screen (Hence why all animations have a number
+                # at the end)
                 try:
-                    screen.blit(self.items[object], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
+                    screen.blit(self.items[item], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
                 except KeyError:
+                    # If it can't put it on the screen, reset the animation keyframe. If for some reason it's still not
+                    # There animations will break. Will be patched in a later update
                     self.keyframe = 0.9
-                               
+
     def check_collision(self, coords):
-        tile = (coords[0]- coords[0] % 30 + 210, coords[1] - coords[1] % 30+(480*3)-90)
+        # This function takes a set of coords and returns if collision is there or not
+        # This essentially adjusts the coords to match the top left corner of the tile,
+        # because that value is what's stored
+        tile = (coords[0] - coords[0] % 30 + 270, coords[1] - coords[1] % 30 + (480 * 3) - 180)
         try:
             collision = self.collision[tile]
+            # This is what I get when I use Google sheets to create my map
             if collision == "TRUE":
                 return True
             else:
                 return False
-        except:
+        except KeyError:
+            # This catches out of bounds collision checks
             return False
 
 
-# This is so it always runs the game file even if I accidentaly try to run this onex                c
+# This is so it always runs the game file even if I accidentally try to run this one
 if __name__ == "__main__":
     import main
