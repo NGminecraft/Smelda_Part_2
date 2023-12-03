@@ -91,7 +91,7 @@ class Level:
     def draw_background(self, screen):
         screen.blit(self.backdrop, (0, 0))
 
-    def draw_character(self, screen, keyframe):
+    def draw_character(self, screen):
         center = (screen.get_width() / 2 - self.characterN.get_width() / 4, screen.get_height() / 2 - self.characterN.get_height())
         screen.blit(self.player.get_player(), center)
 

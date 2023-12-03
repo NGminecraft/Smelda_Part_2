@@ -1,6 +1,7 @@
 import pygame
 import store_view as lvl
 import player as player
+import npc as npc
 
 
 pygame.init()
@@ -10,6 +11,7 @@ main_actor = player.Player()
 walking = False
 level = lvl.Level(main_actor, map="map.npy", collision_map="BigMapCollision.npy")
 level.check_for_items(screen)
+npc(pygame.image.load("Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Extra_Characters\PNG\sprToadEatWithTongue.png"), (10, 6))
 while True:
     pressed = pygame.key.get_pressed()
     for i, v in enumerate(pressed):
@@ -34,6 +36,6 @@ while True:
             
             
     level.check_for_items(screen)
-    level.draw_character(screen, 0)
+    level.draw_character(screen)
     pygame.display.update()
     clock.tick(100)

@@ -1,0 +1,14 @@
+import pygame
+
+class npc():
+    def __init__(self, model, location):
+        self.model = model
+        self.coords = location
+        self.keyframes = self.model.get_width() // self.model.get_height()
+        self.states = {}
+        for i in range(self.keyframes):
+            self.states[i + 1] = self.model.subsurface(self.get_width() * i, 0, self.get_width() * (i+1), self.get_height())
+        self.cuurent_keyframe = 1
+        
+    def update_npc(self, screen, player_coords):
+        screen.blit(self.states[self.cuurent_keyframe], (self.location[0] + 208 - player_coords[0], self.location[1] + 208 + player_coords[1]))

@@ -34,6 +34,7 @@ class Player():
             if not map.check_collision((self.coords[0] - 30, self.coords[1])):
                 self.coords[0] -= self.walk_speed
         self.walking_animation += 0.05
+        print(self.coords)
             
     def get_player(self, keyframe = False):
         if self.walking_animation >= 1 and not keyframe:
