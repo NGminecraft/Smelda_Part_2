@@ -63,8 +63,8 @@ class Player:
         else:
             keyframe = 0
         # This creates the rectangle part of the image depicting the character in that keyframe
-        rect = pygame.Rect(pygame.Rect(keyframe * (self.characterN.get_width() / 2), 0, self.characterN.get_width() / 2,
-                                       self.characterN.get_height()))
+        rect = pygame.Rect(keyframe * (self.characterN.get_width() / 2), 0, self.characterN.get_width() / 2,
+                                       self.characterN.get_height())
         # Returns a character subsurface based off of its orientation and the rectangle above
         if self.facing == 0:
             return self.characterN.subsurface(rect)
