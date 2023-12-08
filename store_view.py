@@ -26,8 +26,7 @@ class Level:
         self.map = map_file
         self.collision_map = collision_map
         # This gets a background from the background array (see: Level.initialize_background() for details)
-        self.backdrop = pygame.surfarray.make_surface(initialize_background())
-        self.backdrop = pygame.transform.scale(self.backdrop, (816, 816))
+        self.backdrop = initialize_background()
         # This is predefining the center variable, which is used when placing the character
         self.center = (384, 360)
         # This initializes the dictionary that contains the map
@@ -92,7 +91,7 @@ class Level:
 
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
-        screen.blit(self.backdrop, (0, 0))
+        screen.blit(pygame.transform.scale(pygame.surfarray.make_surface(self.backdrop), (816, 816)), (0, 0))
 
     def draw_character(self, screen, player):
         # This puts the character on the screen utilizing its builtin get player method
@@ -138,6 +137,18 @@ class Level:
         except KeyError:
             # This catches out of bounds collision checks
             return False
+        
+    def update_background(self, times):
+        new_background = self.backdrop
+        print(new_background)
+        to_add = []
+        for i in range(times):
+            numpy.delete(new_background, 0, 1)
+            for j in range(350):
+                to_add.append(random.choice(BACK_COLORS))
+        for i in to_add:
+            numpy.append(new_background, -1, i, axis=1)
+        self.backdrop = new_background
 
 
 # This is so it always runs the game file even if I accidentally try to run this one

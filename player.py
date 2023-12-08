@@ -49,6 +49,7 @@ class Player:
                 self.coords[0] -= self.walk_speed
         # This function is about as sturdy as my sanity (not)
         self.walking_animation += 0.05
+        level.update_background(self.walk_speed)
 
     def get_player(self, keyframe=False):
         # This returns the image of the character, including walking animation
