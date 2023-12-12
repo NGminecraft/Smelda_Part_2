@@ -20,7 +20,7 @@ class Player:
         self.characterW = pygame.transform.scale_by(pygame.image.load(
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png"), 3)
 
-    def walk(self, level):
+    def walk(self, level, speed_mult = 1):
         # Move the character
         # Depending on whichever way it's facing:
         if self.facing == 0:
@@ -28,28 +28,28 @@ class Player:
             if not level.check_collision((self.coords[0] - 15, self.coords[1] + 30)) and not level.check_collision(
                     (self.coords[0] + 15, self.coords[1] + 30)):
                 # If no collision move forward at walk speed
-                self.coords[1] += self.walk_speed
+                self.coords[1] += self.walk_speed * speed_mult
         # If there is collision check to see if your actually walking into something instead or just up against a wall
             elif not level.check_collision((self.coords[0] - 10, self.coords[1])) and not level.check_collision(
                     (self.coords[0] - 15, self.coords[1] + 30)):
-                self.coords[1] += self.walk_speed
+                self.coords[1] += self.walk_speed * speed_mult
         # That runs depending on which way your facing and changes either your x or y depending on orientation
         if self.facing == 1:
             if not level.check_collision((self.coords[0] + 5, self.coords[1])):
-                self.coords[0] += self.walk_speed
+                self.coords[0] += self.walk_speed * speed_mult
         if self.facing == 2:
             if not level.check_collision((self.coords[0] - 15, self.coords[1] - 4)) and not level.check_collision(
                     (self.coords[0] + 15, self.coords[1] - 4)):
-                self.coords[1] -= self.walk_speed
+                self.coords[1] -= self.walk_speed * speed_mult
             elif not level.check_collision((self.coords[0] - 10, self.coords[1])) and not level.check_collision(
                     (self.coords[0] - 15, self.coords[1] - 4)):
-                self.coords[1] -= self.walk_speed
+                self.coords[1] -= self.walk_speed * speed_mult
         if self.facing == 3:
             if not level.check_collision((self.coords[0] - 45, self.coords[1])):
-                self.coords[0] -= self.walk_speed
+                self.coords[0] -= self.walk_speed * speed_mult   
         # This function is about as sturdy as my sanity (not)
-        self.walking_animation += 0.05
-        level.update_background(self.walk_speed)
+        self.walking_animation += 0.05 * speed_mult
+#        level.update_background(self.walk_speed)
 
     def get_player(self, keyframe=False):
         # This returns the image of the character, including walking animation

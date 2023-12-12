@@ -23,25 +23,29 @@ while True:
     # Takes all the keys that are being pressed and checks to see if any of the movement keys are pressed
     # This is going to be improved later
     pressed = pygame.key.get_pressed()
-    for i, v in enumerate(pressed):
-        if v:
-            # S key
-            if i == 22:
-                # Each block in the if statement changes where the character is facing, then tells it to move
-                main_actor.set_facing(2)
-                main_actor.walk(level)
-            # D key
-            elif i == 7:
-                main_actor.set_facing(1)
-                main_actor.walk(level)
-            # A key
-            elif i == 4:
-                main_actor.set_facing(3)
-                main_actor.walk(level)
-            # W key
-            elif i == 26:
-                main_actor.set_facing(0)
-                main_actor.walk(level)
+    if pressed[pygame.K_p]:
+        print(f"FPS: {clock.get_fps()}")
+        print(f"Coords: {main_actor.get_coords()}")
+    directions = []
+    # S key
+    if pressed[pygame.K_s]:
+        # Each block in the if statement changes where the character is facing, then tells it to move
+        directions.append(2)
+    # D key
+    if pressed[pygame.K_d]:
+        directions.append(1)
+    # A key
+    if pressed[pygame.K_a]:
+        directions.append(3)
+    # W key
+    if pressed[pygame.K_w]:
+        directions.append(0)
+    for i in directions:
+        main_actor.set_facing(i)
+        main_actor.walk(level, 1/len(directions))
+    
+    if pressed[pygame.K_p]:
+        level.debug = True
     # Using my background as the bottom layer
     level.draw_background(screen)
     # Places the level on top of that
@@ -51,4 +55,4 @@ while True:
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed
-    clock.tick(100)
+    clock.tick(10)

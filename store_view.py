@@ -24,6 +24,7 @@ class Level:
     def __init__(self, map_file="map.npy", collision_map="BigMapCollision"):
         # Creates map from passed in map files
         self.map = map_file
+        self.font = pygame.font.init()
         self.collision_map = collision_map
         # This gets a background from the background array (see: Level.initialize_background() for details)
         self.backdrop = initialize_background()
@@ -121,6 +122,7 @@ class Level:
                     # If it can't put it on the screen, reset the animation keyframe. If for some reason it's still not
                     # There animations will break. Will be patched in a later update
                     self.keyframe = 0.9
+        
 
     def check_collision(self, coords):
         # This function takes a set of coords and returns if collision is there or not
