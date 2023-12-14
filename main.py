@@ -55,4 +55,4 @@ while True:
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed
-    clock.tick(10)
+    clock.tick(100)
