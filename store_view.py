@@ -4,19 +4,25 @@ import random
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
+BLACK_COLORS = ((0, 0, 0), (255, 255, 255))
 TILE_SET_LOCATION = "tileBaseTileset.png"
 
 
-def initialize_background():
+def initialize_background(static=False):
     # PyCharm gets mad if this isn't here
     # This creates a background which is essentially each pixel being a random color in the BACK_COLORS list
+    
     background = []
     for i in range(350):
         layer1 = []
         for j in range(350):
-            layer1.append(random.choice(BACK_COLORS))
+            if static:
+                layer1.append(random.choice(BLACK_COLORS))
+            else:
+                layer1.append(random.choice(BACK_COLORS))
         background.append(layer1)
     # I need to fix this array obsession
+    print(numpy.info(numpy.asarray(background[0])))
     return numpy.asarray(background)
 
 
@@ -66,6 +72,7 @@ class Level:
             "Frog4": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(72, 0, 24, 24)), (30, 30))
         }
         # This is the variable for storing the current keyframe for tiles with animations
+        self.static = 0
         self.keyframe = 1
 
     def initialize_map_dict(self):
@@ -93,6 +100,9 @@ class Level:
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
         screen.blit(pygame.transform.scale(pygame.surfarray.make_surface(self.backdrop), (816, 816)), (0, 0))
+        if pygame.key.get_pressed()[pygame.K_END]:
+            self.static = 1
+            self.backdrop = initialize_background(static=True)
 
     def draw_character(self, screen, player):
         # This puts the character on the screen utilizing its builtin get player method
@@ -139,18 +149,6 @@ class Level:
         except KeyError:
             # This catches out of bounds collision checks
             return False
-        
-    def update_background(self, times):
-        new_background = self.backdrop
-        print(new_background)
-        to_add = []
-        for i in range(times):
-            numpy.delete(new_background, 0, 1)
-            for j in range(350):
-                to_add.append(random.choice(BACK_COLORS))
-        for i in to_add:
-            numpy.append(new_background, -1, i, axis=1)
-        self.backdrop = new_background
 
 
 # This is so it always runs the game file even if I accidentally try to run this one

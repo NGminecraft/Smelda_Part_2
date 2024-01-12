@@ -40,9 +40,21 @@ while True:
     # W key
     if pressed[pygame.K_w]:
         directions.append(0)
+    sprint = 1
+    if pressed[pygame.K_LSHIFT]:
+        sprint = sprint*2
+    if pressed[pygame.K_RSHIFT]:
+        sprint = sprint * 2
+    main_actor.crouching = 1
+    if pressed[pygame.K_LCTRL]:
+        main_actor.crouching = main_actor.crouching * 2
+    if pressed[pygame.K_RCTRL]:
+        main_actor.crouching = main_actor.crouching * 2
+    else:
+        main_actor.crouching = 1
     for i in directions:
         main_actor.set_facing(i)
-        main_actor.walk(level, 1/len(directions))
+        main_actor.walk(level, 1/len(directions)*sprint)
     
     if pressed[pygame.K_p]:
         level.debug = True

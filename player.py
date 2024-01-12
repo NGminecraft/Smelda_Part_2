@@ -49,7 +49,6 @@ class Player:
                 self.coords[0] -= self.walk_speed * speed_mult   
         # This function is about as sturdy as my sanity (not)
         self.walking_animation += 0.05 * speed_mult
-#        level.update_background(self.walk_speed)
 
     def get_player(self, keyframe=False):
         # This returns the image of the character, including walking animation
@@ -68,13 +67,13 @@ class Player:
                                        self.characterN.get_height())
         # Returns a character subsurface based off of its orientation and the rectangle above
         if self.facing == 0:
-            return self.characterN.subsurface(rect)
+            return pygame.transform.scale(self.characterN.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 3:
-            return self.characterW.subsurface(rect)
+            return pygame.transform.scale(self.characterW.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 2:
-            return self.characterS.subsurface(rect)
+            return pygame.transform.scale(self.characterS.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 1:
-            return self.characterE.subsurface(rect)
+            return pygame.transform.scale(self.characterE.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
 
     def get_coords(self):
         # Basic coordinate getter
