@@ -1,5 +1,6 @@
 from items import *
 from items.potions import *
+import warnings
 
 
 class Order:
@@ -25,4 +26,5 @@ class Order:
             self.location += 1
             return self.full_order[self.location - 1]
         except IndexError:
+            warnings.warn("Attempted to access more orders then")
             return None
