@@ -21,4 +21,8 @@ class Order:
         return iter(self.full_order)
     
     def __next__(self):
-        return self.full_order[self.location]
+        try:
+            self.location += 1
+            return self.full_order[self.location - 1]
+        except IndexError:
+            return None
