@@ -8,7 +8,7 @@ class Order:
         self.location = 0
     
     def add(self, item):
-        if item.valid:
+        if item.name:
             self.full_order.append(item)
             
     def get_order(self):
@@ -18,7 +18,7 @@ class Order:
         return len(self.full_order)
     
     def __iter__(self):
-        return tuple(self.full_order)
+        return iter(self.full_order)
     
     def __next__(self):
         return self.full_order[self.location]
