@@ -13,6 +13,7 @@ class ShopItem:
             raise InvalidIDS(name)
         self.item_class = item_class
         self.image_file = image
+        self.valid == True
     
     def set_name(self, new_name):
         self.name = new_name

@@ -1,6 +1,7 @@
 import pygame
 import numpy
 import random
+from items import shopitem
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -22,7 +23,6 @@ def initialize_background(static=False):
                 layer1.append(random.choice(BACK_COLORS))
         background.append(layer1)
     # I need to fix this array obsession
-    print(numpy.info(numpy.asarray(background[0])))
     return numpy.asarray(background)
 
 
