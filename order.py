@@ -1,5 +1,8 @@
 from items import *
 import warnings
+from items.sword import Sword
+from items.potion import Potion
+from items.shopitem import ShopItem
 
 
 class Order:
@@ -17,6 +20,7 @@ class Order:
     def __len__(self):
         return len(self._full_order)
     
+    
     def __iter__(self):
         return iter(self._full_order)
     
@@ -27,3 +31,5 @@ class Order:
         except IndexError:
             warnings.warn("Attempted to access more orders then")
             return None
+        
+        
