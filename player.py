@@ -20,7 +20,7 @@ class Player:
         self.characterW = pygame.transform.scale_by(pygame.image.load(
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png"), 3)
 
-    def walk(self, level, speed_mult = 1):
+    def walk(self, level, speed_mult=1):
         # Move the character
         # Depending on whichever way it's facing:
         if self.facing == 0:
@@ -29,7 +29,8 @@ class Player:
                     (self.coords[0] + 15, self.coords[1] + 30)):
                 # If no collision move forward at walk speed
                 self.coords[1] += self.walk_speed * speed_mult
-        # If there is collision check to see if your actually walking into something instead or just up against a wall
+            # If there is collision check to see if your actually walking into something instead or just up against a
+            # wall
             elif not level.check_collision((self.coords[0] - 10, self.coords[1])) and not level.check_collision(
                     (self.coords[0] - 15, self.coords[1] + 30)):
                 self.coords[1] += self.walk_speed * speed_mult
@@ -46,8 +47,8 @@ class Player:
                 self.coords[1] -= self.walk_speed * speed_mult
         if self.facing == 3:
             if not level.check_collision((self.coords[0] - 45, self.coords[1])):
-                self.coords[0] -= self.walk_speed * speed_mult   
-        # This function is about as sturdy as my sanity (not)
+                self.coords[0] -= self.walk_speed * speed_mult
+                # This function is about as sturdy as my sanity (not)
         self.walking_animation += 0.05 * speed_mult
 
     def get_player(self, keyframe=False):
@@ -64,16 +65,20 @@ class Player:
             keyframe = 0
         # This creates the rectangle part of the image depicting the character in that keyframe
         rect = pygame.Rect(keyframe * (self.characterN.get_width() / 2), 0, self.characterN.get_width() / 2,
-                                       self.characterN.get_height())
+                           self.characterN.get_height())
         # Returns a character subsurface based off of its orientation and the rectangle above
         if self.facing == 0:
-            return pygame.transform.scale(self.characterN.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
+            return pygame.transform.scale(self.characterN.subsurface(rect), (
+                self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 3:
-            return pygame.transform.scale(self.characterW.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
+            return pygame.transform.scale(self.characterW.subsurface(rect), (
+                self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 2:
-            return pygame.transform.scale(self.characterS.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
+            return pygame.transform.scale(self.characterS.subsurface(rect), (
+                self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
         elif self.facing == 1:
-            return pygame.transform.scale(self.characterE.subsurface(rect), (self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
+            return pygame.transform.scale(self.characterE.subsurface(rect), (
+                self.characterN.get_width() / 2, self.characterN.get_height() / self.crouching))
 
     def get_coords(self):
         # Basic coordinate getter

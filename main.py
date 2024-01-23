@@ -1,3 +1,10 @@
+import sys
+# This sketchy looking code allows me to import modules from parent directories
+a = sys.path[0].split('\\')
+a.append("items")
+sys.path.append("\\".join(a))
+a.append("potions")
+sys.path.append("\\".join(a))
 import pygame
 import store_view as lvl
 import player as player

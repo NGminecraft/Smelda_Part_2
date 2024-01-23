@@ -11,11 +11,4 @@ with open("Legend of smelda - Big Collision.csv", "r") as csv:
 print(np.save("BigMapCollision", np.asarray(c)))
 """
 
-import sys
-print(sys.path)
-print(type(sys.path))
-a = sys.path
-a = a[0].split("\\")
-print(a)
-del a[-1]
-print("\\".join(a))
+import items.potions.health

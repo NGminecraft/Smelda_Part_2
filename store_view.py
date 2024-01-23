@@ -12,7 +12,7 @@ TILE_SET_LOCATION = "tileBaseTileset.png"
 def initialize_background(static=False):
     # PyCharm gets mad if this isn't here
     # This creates a background which is essentially each pixel being a random color in the BACK_COLORS list
-    
+
     background = []
     for i in range(350):
         layer1 = []
@@ -72,7 +72,6 @@ class Level:
             "Frog4": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(72, 0, 24, 24)), (30, 30))
         }
         # This is the variable for storing the current keyframe for tiles with animations
-        self.static = 0
         self.keyframe = 1
 
     def initialize_map_dict(self):
@@ -132,7 +131,6 @@ class Level:
                     # If it can't put it on the screen, reset the animation keyframe. If for some reason it's still not
                     # There animations will break. Will be patched in a later update
                     self.keyframe = 0.9
-        
 
     def check_collision(self, coords):
         # This function takes a set of coords and returns if collision is there or not

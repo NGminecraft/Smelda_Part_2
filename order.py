@@ -20,7 +20,6 @@ class Order:
     def __len__(self):
         return len(self._full_order)
     
-    
     def __iter__(self):
         return iter(self._full_order)
     
@@ -29,7 +28,7 @@ class Order:
             self._location += 1
             return self._full_order[self._location - 1]
         except IndexError:
-            warnings.warn("Attempted to access more orders then")
+            warnings.warn("Attempted to access more orders then available")
             return None
         
         
