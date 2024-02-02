@@ -52,6 +52,8 @@ class Level:
         self.time = 255
         self.time_mult = 100 / (60 * 100)
         
+        self.light_distance = 1000
+        
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
             "Cabinet": pygame.transform.rotate(tileset.subsurface(pygame.Rect(513, 257, 30, 30)), 90),
@@ -77,6 +79,8 @@ class Level:
         }
         # This is the variable for storing the current keyframe for tiles with animations
         self.keyframe = 1
+        self.light = []
+        self.light_map = [[0] * self.light_distance * 2 + 800] * self.light_distance * 2 + 800
 
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
@@ -111,7 +115,11 @@ class Level:
         # This puts the character on the screen utilizing its builtin get player method
         screen.blit(player.get_player(), self.center)
         
+    def update_light_map(self):
+        pass
+        
     def day_night(self, screen):
+        self.update_light_map()
         s = pygame.Surface((1000, 1000))
         s.set_alpha(255 - self.time)
         screen.blit(s, (0,0))
@@ -123,6 +131,11 @@ class Level:
             self.time_mult = self.time_mult * -1
             self.time = 25
         
+    def check_light(self, arg):
+        if "L_" in arg:
+            return True
+        else:
+            return False
 
     def place_items(self, screen, player):
         # This puts all the items on the screen in their locations in respect to the players location
@@ -133,6 +146,8 @@ class Level:
             # It will try to just place the current item on the screen
             try:
                 screen.blit(self.items[self.level[key]], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
+                if self.check_light(self.level[key]):
+                    self.light.append((key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
             except KeyError:
                 # The KeyError either means I did something wrong, or the tile has an animation
                 self.keyframe += 0.006
@@ -144,8 +159,9 @@ class Level:
                 # at the end)
                 try:
                     screen.blit(self.items[item], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
+                    if self.check_light(self.level[key]):
+                        self.light.append((key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
                 except KeyError:
-                    print(item)
                     # If it can't put it on the screen, reset the animation keyframe. If for some reason it's still not
                     # There animations will break. Will be patched in a later update
                     self.keyframe = 0.9
