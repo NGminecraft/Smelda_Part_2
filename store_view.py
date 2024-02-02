@@ -48,24 +48,28 @@ class Level:
         #
         # This is the dictionary that maps each tile name (str) to a subsurface that can be put on the string
         # A number at the end of the string indicates that it is part of an animation (4 keyframes per, no exceptions)
+        
+        self.time = 255
+        self.time_mult = 100 / (60 * 100)
+        
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
             "Cabinet": pygame.transform.rotate(tileset.subsurface(pygame.Rect(513, 257, 30, 30)), 90),
             "Counter": tileset.subsurface(pygame.Rect(545, 257, 30, 30)),
             '': pygame.transform.scale(tileset.subsurface(pygame.Rect(659, 305, 29, 29)), (30, 30)),
             "Stash1": tileset.subsurface(pygame.Rect(370, 255, 30, 30)),
-            "TorchN1": pygame.transform.scale(tileset.subsurface(pygame.Rect(737, 356, 15, 30)), (30, 30)),
-            "TorchN2": pygame.transform.scale(tileset.subsurface(pygame.Rect(753, 356, 15, 30)), (30, 30)),
-            "TorchN3": pygame.transform.scale(tileset.subsurface(pygame.Rect(769, 356, 15, 30)), (30, 30)),
-            "TorchN4": pygame.transform.scale(tileset.subsurface(pygame.Rect(785, 356, 15, 30)), (30, 30)),
-            "TorchS1": pygame.transform.scale(tileset.subsurface(pygame.Rect(737, 386, 15, 30)), (30, 30)),
-            "TorchS2": pygame.transform.scale(tileset.subsurface(pygame.Rect(753, 386, 15, 30)), (30, 30)),
-            "TorchS3": pygame.transform.scale(tileset.subsurface(pygame.Rect(769, 386, 15, 30)), (30, 30)),
-            "TorchS4": pygame.transform.scale(tileset.subsurface(pygame.Rect(785, 386, 15, 30)), (30, 30)),
-            "FloorTorch1": pygame.transform.scale(tileset.subsurface(pygame.Rect(736, 320, 15, 15)), (30, 30)),
-            "FloorTorch4": pygame.transform.scale(tileset.subsurface(pygame.Rect(784, 320, 15, 15)), (30, 30)),
-            "FloorTorch3": pygame.transform.scale(tileset.subsurface(pygame.Rect(768, 320, 15, 15)), (30, 30)),
-            "FloorTorch2": pygame.transform.scale(tileset.subsurface(pygame.Rect(752, 320, 15, 15)), (30, 30)),
+            "L_TorchN1": pygame.transform.scale(tileset.subsurface(pygame.Rect(737, 356, 15, 30)), (30, 30)),
+            "L_TorchN2": pygame.transform.scale(tileset.subsurface(pygame.Rect(753, 356, 15, 30)), (30, 30)),
+            "L_TorchN3": pygame.transform.scale(tileset.subsurface(pygame.Rect(769, 356, 15, 30)), (30, 30)),
+            "L_TorchN4": pygame.transform.scale(tileset.subsurface(pygame.Rect(785, 356, 15, 30)), (30, 30)),
+            "L_TorchS1": pygame.transform.scale(tileset.subsurface(pygame.Rect(737, 386, 15, 30)), (30, 30)),
+            "L_TorchS2": pygame.transform.scale(tileset.subsurface(pygame.Rect(753, 386, 15, 30)), (30, 30)),
+            "L_TorchS3": pygame.transform.scale(tileset.subsurface(pygame.Rect(769, 386, 15, 30)), (30, 30)),
+            "L_TorchS4": pygame.transform.scale(tileset.subsurface(pygame.Rect(785, 386, 15, 30)), (30, 30)),
+            "L_FloorTorch1": pygame.transform.scale(tileset.subsurface(pygame.Rect(736, 320, 15, 15)), (30, 30)),
+            "L_FloorTorch4": pygame.transform.scale(tileset.subsurface(pygame.Rect(784, 320, 15, 15)), (30, 30)),
+            "L_FloorTorch3": pygame.transform.scale(tileset.subsurface(pygame.Rect(768, 320, 15, 15)), (30, 30)),
+            "L_FloorTorch2": pygame.transform.scale(tileset.subsurface(pygame.Rect(752, 320, 15, 15)), (30, 30)),
             "Frog1": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(0, 0, 24, 24)), (30, 30)),
             "Frog2": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(24, 0, 24, 24)), (30, 30)),
             "Frog3": pygame.transform.scale(self.frogNPC.subsurface(pygame.Rect(48, 0, 24, 24)), (30, 30)),
@@ -106,6 +110,19 @@ class Level:
     def draw_character(self, screen, player):
         # This puts the character on the screen utilizing its builtin get player method
         screen.blit(player.get_player(), self.center)
+        
+    def day_night(self, screen):
+        s = pygame.Surface((1000, 1000))
+        s.set_alpha(255 - self.time)
+        screen.blit(s, (0,0))
+        self.time += 1 * self.time_mult
+        if self.time > 255:
+            self.time_mult = self.time_mult * -1
+            self.time = 254
+        elif self.time < 25:
+            self.time_mult = self.time_mult * -1
+            self.time = 25
+        
 
     def place_items(self, screen, player):
         # This puts all the items on the screen in their locations in respect to the players location
@@ -123,6 +140,7 @@ class Level:
                 # This is a funky way of doing it. It takes the rounded version of whatever keyframe its on and appends
                 # It to the name of whatever it's trying to put on
                 item += str(round(self.keyframe))
+                print(item)
                 # It will then attempt to put it that edited name on the screen (Hence why all animations have a number
                 # at the end)
                 try:

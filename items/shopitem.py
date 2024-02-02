@@ -1,7 +1,8 @@
 from exceptions import *
+from abc import ABC, abstractmethod
 
 
-class ShopItem:
+class ShopItem(ABC):
     def __init__(self, name, price, id_dict, item_class, image):
         self.name = str(name)
         if type(price) == float or type(price) == int:
@@ -34,5 +35,6 @@ class ShopItem:
     def set_item_class(self, new_classes):
         self.item_class = new_classes
 
+    @abstractmethod
     def use():
         raise NotImplemented

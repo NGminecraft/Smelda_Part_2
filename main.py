@@ -8,6 +8,7 @@ sys.path.append("\\".join(a))
 import pygame
 import store_view as lvl
 import player as player
+from shop import Shop
 
 # Setting up the pygame window
 pygame.init()
@@ -71,6 +72,7 @@ while True:
     level.place_items(screen, main_actor)
     # Adds the character
     level.draw_character(screen, main_actor)
+    level.day_night(screen)
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed
