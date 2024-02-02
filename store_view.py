@@ -140,12 +140,12 @@ class Level:
                 # This is a funky way of doing it. It takes the rounded version of whatever keyframe its on and appends
                 # It to the name of whatever it's trying to put on
                 item += str(round(self.keyframe))
-                print(item)
                 # It will then attempt to put it that edited name on the screen (Hence why all animations have a number
                 # at the end)
                 try:
                     screen.blit(self.items[item], (key[0] + 208 - coords[0], key[1] + 208 + coords[1]))
                 except KeyError:
+                    print(item)
                     # If it can't put it on the screen, reset the animation keyframe. If for some reason it's still not
                     # There animations will break. Will be patched in a later update
                     self.keyframe = 0.9
