@@ -52,8 +52,6 @@ class Level:
         self.time = 255
         self.time_mult = 100 / (60 * 100)
         
-        self.light_distance = 1000
-        
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
             "Cabinet": pygame.transform.rotate(tileset.subsurface(pygame.Rect(513, 257, 30, 30)), 90),
@@ -79,8 +77,6 @@ class Level:
         }
         # This is the variable for storing the current keyframe for tiles with animations
         self.keyframe = 1
-        self.light = []
-        self.light_map = [[0] * self.light_distance * 2 + 800] * self.light_distance * 2 + 800
 
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
