@@ -31,4 +31,5 @@ class Order:
             warnings.warn("Attempted to access more orders then available")
             return None
         
-        
+    def __str__(self):
+        return self

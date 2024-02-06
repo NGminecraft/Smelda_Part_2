@@ -15,6 +15,7 @@ class ShopItem(ABC):
             raise InvalidIDS(name, id_dict)
         self.item_class = item_class
         self.image_file = image
+        self.tax = 0.0725
         self.valid = True
 
     def set_name(self, new_name):
@@ -38,3 +39,6 @@ class ShopItem(ABC):
     @abstractmethod
     def use():
         raise NotImplemented
+    
+    def calculate_tax(self):
+        return self.price + self.price * self.tax
