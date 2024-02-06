@@ -1,3 +1,4 @@
+import pygame
 from exceptions import *
 from abc import ABC, abstractmethod
 
@@ -14,7 +15,7 @@ class ShopItem(ABC):
         else:
             raise InvalidIDS(name, id_dict)
         self.item_class = item_class
-        self.image_file = image
+        self.image = pygame.image.load(image)
         self.tax = 0.0725
         self.valid = True
 
