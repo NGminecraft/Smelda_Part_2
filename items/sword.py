@@ -4,7 +4,7 @@ from shopitem import ShopItem
 
 
 class Sword(ShopItem):
-    def __init__(self, name, price, item_class, image, tier):
+    def __init__(self, name, price, item_class, tier, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconSword.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price

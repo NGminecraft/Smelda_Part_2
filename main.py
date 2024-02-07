@@ -21,6 +21,8 @@ level = lvl.Level(map_file="map.npy", collision_map="BigMapCollision.npy")
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
+level.init_gui(screen)
+
 # Main game loop
 while True:
     # This actually terminates the game, when you try to terminate the game
@@ -72,6 +74,7 @@ while True:
     level.place_items(screen, main_actor)
     # Adds the character
     level.draw_character(screen, main_actor)
+    level.store_gui(screen)
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed

@@ -124,8 +124,25 @@ class Level:
                         else:
                             count = 1
                         self.inventory[classobj] = count
-        print (self.inventory)
-        
+                        
+    def init_gui(self, screen):
+        self.gui_height = screen.get_height() // 2
+        self.width = screen.get_width()
+        self.gui_rows = 2
+        self.gui_layout = []
+        keys = list(self.inventory.keys())
+        for i in range(self.gui_rows):
+            self.gui_layout.append([])
+        if len(self.inventory) % self.gui_rows != 0:
+            overflow = len(self.inventory) % self.gui_rows != 0
+        else:
+            overflow = 0
+        for num in range(self.gui_rows):
+            for i in range(len(self.inventory) // self.gui_rows + 1):
+                self.gui_layout[num].append(keys[i])
+            else:
+                overflow -= 1
+        self.side_length = min(self.gui_height / self.gui_rows, self.width / len(self.gui_layout[0]))
 
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
@@ -180,7 +197,10 @@ class Level:
             return False
         
     def store_gui(self, screen):
-        pass
+        back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
+        back.fill((0, 0, 0, 220))
+        back.set_alpha(220)
+        screen.blit(back, (0, 0))
 
 
 # This is so it always runs the game file even if I accidentally try to run this one

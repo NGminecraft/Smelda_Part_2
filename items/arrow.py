@@ -4,7 +4,7 @@ import pygame
 
 
 class Arrow(ShopItem):
-    def __init__(self, name, price, item_class, image):
+    def __init__(self, name, price, item_class, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconMiniArrow.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
