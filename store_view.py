@@ -5,6 +5,7 @@ from items import *
 import os
 from items.potions import *
 import importlib
+from copy import deepcopy
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -116,7 +117,7 @@ class Level:
             for root, dirs, files in os.walk(folder):
                 for file_name in files:
                     # Append the absolute path of each file to the list
-                    if not file_name in blacklist and not ".pyc" in file_name:
+                    if file_name not in blacklist and not ".pyc" in file_name:
                         module = __import__(file_name[0:-3], file_name.capitalize())
                         classobj = getattr(module, file_name[0:-3].capitalize())
                         if classobj.get_ids()["consumable"]:
@@ -137,13 +138,13 @@ class Level:
             overflow = len(self.inventory) % self.gui_rows != 0
         else:
             overflow = 0
+        items = list(self.inventory.keys())
+        length = len(items)
         for num in range(self.gui_rows):
-            for i in range(len(self.inventory) // self.gui_rows + 1):
-                self.gui_layout[num].append(keys[i])
-            else:
-                overflow -= 1
+            self.gui_layout[num] = items[0:length // self.gui_rows + overflow]
+            del items[0:length // self.gui_rows + overflow]
+            overflow = max(overflow - 1, 0)
         self.side_length = min(self.gui_height / self.gui_rows, self.width / len(self.gui_layout[0]))
-
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
         screen.blit(pygame.transform.scale(pygame.surfarray.make_surface(self.backdrop), (816, 816)), (0, 0))
@@ -201,6 +202,16 @@ class Level:
         back.fill((0, 0, 0, 220))
         back.set_alpha(220)
         screen.blit(back, (0, 0))
+        self.gui_buttons = []
+        for index, value in enumerate(self.gui_layout):
+            dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
+            for i, v in enumerate(value):
+                self.gui_buttons.append(screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index)))
+                
+    def check_gui_click(self, pos):
+        for i in self.gui_buttons:
+            if i.collidepoint(pos):
+                print(pos)
 
 
 # This is so it always runs the game file even if I accidentally try to run this one

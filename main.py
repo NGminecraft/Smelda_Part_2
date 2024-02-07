@@ -18,6 +18,7 @@ clock = pygame.time.Clock()
 main_actor = player.Player()
 # This is our level, using my largest map
 level = lvl.Level(map_file="map.npy", collision_map="BigMapCollision.npy")
+print(level)
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
@@ -36,6 +37,9 @@ while True:
     if pressed[pygame.K_p]:
         print(f"FPS: {clock.get_fps()}")
         print(f"Coords: {main_actor.get_coords()}")
+        
+    if pygame.MOUSEBUTTONDOWN and event.button == 1:
+        level.check_gui_click(pygame.mouse.get_pos())
     directions = []
     # S key
     if pressed[pygame.K_s]:

@@ -4,13 +4,12 @@ from shopitem import ShopItem
 
 
 class Sword(ShopItem):
-    def __init__(self, name, price, item_class, tier, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconSword.png"):
+    def __init__(self, name, price=100, tier=1, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconSword.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
         else:
             raise InvalidPrice(name, price)
-        self.item_class = item_class
         self.image = pygame.image.load(image)
         self.tax = 0.0725
         self.valid = True
