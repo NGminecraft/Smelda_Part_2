@@ -1,7 +1,10 @@
 import pygame
 import numpy
 import random
-from items import shopitem
+from items import *
+import os
+from items.potions import *
+import importlib
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -77,6 +80,7 @@ class Level:
         }
         # This is the variable for storing the current keyframe for tiles with animations
         self.keyframe = 1
+        self.init_inventory()
 
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
@@ -99,6 +103,29 @@ class Level:
             for column_num, column in enumerate(row):
                 dictionary[(row_num * 30, column_num * 30)] = column
         return dictionary
+    
+    def init_inventory(self):
+        # This guys job is to find all the items in the items folder
+        blacklist = ("shopitem.py", "potion.py") # This is a tuple of all the files to ignore when finding items
+        self.inventory = {}
+        selfdir = os.path.dirname(os.path.realpath(__file__))
+        folders = (f"{selfdir}\\items\\potions\\", f"{selfdir}\\items\\")
+        if len(folders) == 1:
+            raise "Tuple too small. len of tuple MUST be over 1"
+        for folder in folders:
+            for root, dirs, files in os.walk(folder):
+                for file_name in files:
+                    # Append the absolute path of each file to the list
+                    if not file_name in blacklist and not ".pyc" in file_name:
+                        module = __import__(file_name[0:-3], file_name.capitalize())
+                        classobj = getattr(module, file_name[0:-3].capitalize())
+                        if classobj.get_ids()["consumable"]:
+                            count = 100
+                        else:
+                            count = 1
+                        self.inventory[classobj] = count
+        print (self.inventory)
+        
 
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
@@ -151,6 +178,9 @@ class Level:
         except KeyError:
             # This catches out of bounds collision checks
             return False
+        
+    def store_gui(self, screen):
+        pass
 
 
 # This is so it always runs the game file even if I accidentally try to run this one
