@@ -24,6 +24,8 @@ level.place_items(screen, main_actor)
 
 level.init_gui(screen)
 
+in_gui = False
+
 # Main game loop
 while True:
     # This actually terminates the game, when you try to terminate the game
@@ -37,48 +39,54 @@ while True:
     if pressed[pygame.K_p]:
         print(f"FPS: {clock.get_fps()}")
         print(f"Coords: {main_actor.get_coords()}")
-        
-    if pygame.MOUSEBUTTONDOWN and event.button == 1:
+    if pygame.mouse.get_pressed()[0]:
         level.check_gui_click(pygame.mouse.get_pos())
-    directions = []
-    # S key
-    if pressed[pygame.K_s]:
-        # Each block in the if statement changes where the character is facing, then tells it to move
-        directions.append(2)
-    # D key
-    if pressed[pygame.K_d]:
-        directions.append(1)
-    # A key
-    if pressed[pygame.K_a]:
-        directions.append(3)
-    # W key
-    if pressed[pygame.K_w]:
-        directions.append(0)
-    sprint = 1
-    if pressed[pygame.K_LSHIFT]:
-        sprint = sprint*2
-    if pressed[pygame.K_RSHIFT]:
-        sprint = sprint * 2
-    main_actor.crouching = 1
-    if pressed[pygame.K_LCTRL]:
-        main_actor.crouching = main_actor.crouching * 2
-    if pressed[pygame.K_RCTRL]:
-        main_actor.crouching = main_actor.crouching * 2
-    else:
+    if not in_gui:
+        directions = []
+        # S key
+        if pressed[pygame.K_s]:
+            # Each block in the if statement changes where the character is facing, then tells it to move
+            directions.append(2)
+        # D key
+        if pressed[pygame.K_d]:
+            directions.append(1)
+        # A key
+        if pressed[pygame.K_a]:
+            directions.append(3)
+        # W key
+        if pressed[pygame.K_w]:
+            directions.append(0)
+        sprint = 1
+        if pressed[pygame.K_LSHIFT]:
+            sprint = sprint*2
+        if pressed[pygame.K_RSHIFT]:
+            sprint = sprint * 2
         main_actor.crouching = 1
-    for i in directions:
-        main_actor.set_facing(i)
-        main_actor.walk(level, 1/len(directions)*sprint)
+        if pressed[pygame.K_LCTRL]:
+            main_actor.crouching = main_actor.crouching * 2
+        if pressed[pygame.K_RCTRL]:
+            main_actor.crouching = main_actor.crouching * 2
+        else:
+            main_actor.crouching = 1
+        for i in directions:
+            main_actor.set_facing(i)
+            main_actor.walk(level, 1/len(directions)*sprint)
     
     if pressed[pygame.K_p]:
         level.debug = True
+        
+    if pressed[pygame.K_TAB]:
+        in_gui = True
+    else:
+        in_gui = False
     # Using my background as the bottom layer
     level.draw_background(screen)
     # Places the level on top of that
     level.place_items(screen, main_actor)
     # Adds the character
     level.draw_character(screen, main_actor)
-    level.store_gui(screen)
+    if in_gui:
+        level.store_gui(screen)
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed

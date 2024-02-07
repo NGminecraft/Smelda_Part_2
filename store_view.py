@@ -202,16 +202,16 @@ class Level:
         back.fill((0, 0, 0, 220))
         back.set_alpha(220)
         screen.blit(back, (0, 0))
-        self.gui_buttons = []
+        self.gui_buttons = {}
         for index, value in enumerate(self.gui_layout):
             dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
             for i, v in enumerate(value):
-                self.gui_buttons.append(screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index)))
+                self.gui_buttons[v] = screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index))
                 
     def check_gui_click(self, pos):
-        for i in self.gui_buttons:
-            if i.collidepoint(pos):
-                print(pos)
+        for i in list(self.gui_buttons.keys()):
+            if self.gui_buttons[i].collidepoint(pos):
+                print(i)
 
 
 # This is so it always runs the game file even if I accidentally try to run this one
