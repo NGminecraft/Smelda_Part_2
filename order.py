@@ -30,19 +30,18 @@ class Order:
     def __str__(self):
         items = {}
         for i in self._full_order:
-            if i in items:
+            i = i.name
+            if i in items.keys():
                 items[i] += 1
             else:
                 items[i] = 1
+        length = 30
+        result = []
+        for key in items:
+            result.append(f"{key}{" "*(length-(len(key)+len(str(items[key]))))}{items[key]}")
         items["Subtotal: "] = self.order_cost()
         items["Taxes: "] = self.order_tax()
         items["Total: "] = self.order_cost() + self.order_tax()
-        length = 20
-        result = []
-        for key in items:
-            print(key)
-            print(type(key))
-            result.append(f"{key}{" "*(10-len(key)+len(str(length)))}{items[key]}")
         return "/n".join(result)
 
     def order_cost(self):
@@ -50,3 +49,7 @@ class Order:
 
     def order_tax(self):
         return sum(i.calculate_tax() for i in self._full_order)
+
+
+if __name__ == "__main__":
+    import main

@@ -221,13 +221,16 @@ class Level:
         self.pygame_multiline(screen, str(self.order_handler), (0, 0))
 
     def check_gui_click(self, pos, player):
-        for i in list(self.gui_buttons.keys()):
-            if self.gui_buttons[i].collidepoint(pos):
-                if i == "checkout":
-                    self.checkout(player)
+        try:
+            for i in list(self.gui_buttons.keys()):
+                if self.gui_buttons[i].collidepoint(pos):
+                    if i == "checkout":
+                        self.checkout(player)
+                        break
+                    self.order_handler.add(i())
                     break
-                self.order_handler.add(i())
-                break
+        except AttributeError:
+            pass
 
     def checkout(self, player):
         if len(self.cart) > 0:

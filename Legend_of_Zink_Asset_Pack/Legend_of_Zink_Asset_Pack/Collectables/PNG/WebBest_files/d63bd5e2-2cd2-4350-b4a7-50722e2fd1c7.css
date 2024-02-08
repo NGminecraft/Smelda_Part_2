@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Publico Headline';
+    src: url('//cdn.taboola.com/static/72/72f23c7e-3d3d-4bb8-b8be-5ce1920693b4.eot?');
+    src: local('Publico Headline'),
+    url('//cdn.taboola.com/static/72/72f23c7e-3d3d-4bb8-b8be-5ce1920693b4.eot?#iefix') format('embedded-opentype'),
+        url('//cdn.taboola.com/static/b1/b1010202-0320-4f7f-8978-f0a82d66a1a7.woff2') format('woff2'),
+        url('//cdn.taboola.com/static/97/97beae28-14d3-4945-addf-7240bf175a9f.woff') format('woff'),
+        url('//cdn.taboola.com/static/62/629c03f3-de47-45eb-b65c-a3cc67fc7647.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -1,0 +1,18 @@
+<html><body onload="document.forms[0].submit()">
+<form action="https://ckf02.alpinedistrict.org/cgi-bin/blockpage/blockpage.cgi" method="GET">
+<input type="Hidden" name="URL" value="https://aa.agkn.com/adscores/g.pixel">
+<input type="Hidden" name="CAT" value="Malicious (Global)">
+<input type="Hidden" name="CATNO" value="19">
+<input type="Hidden" name="ACC" value="grahanic001/asd.alpinedistrict">
+<input type="Hidden" name="WHY" value="Policy=esports; NT/IP Address=10.34.72.0">
+<input type="Hidden" name="MOD" value="2">
+<input type="Hidden" name="APP" value="anchorfree">
+<input type="Hidden" name="ISO" value="7 Min(s), 51 Sec(s)">
+<input type="Hidden" name="IPA" value="10.232.8.102">
+<input type="Hidden" name="RAW" value="https://aa.agkn.com/adscores/g.pixel?sid=9212293468&gdpr=&gdpr_consent=">
+<input type="Hidden" name="AUTH0" value=",Malicious (Global)">
+<input type="Hidden" name="PGE" value="https://ckf02.alpinedistrict.org/cgi-bin/blockpage/blockpage.cgi">
+<input type="Hidden" name="STR" value="null,null,null,null,null">
+<input type="Hidden" name="SRV" value="null">
+<input type="Hidden" name="AUTH1" value=",aa.agkn.com/adscores/g.pixel?sid=9212293468&gdpr=&gdpr_consent=,Malicious (Global)">
+</form></body></html>

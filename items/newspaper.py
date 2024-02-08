@@ -17,7 +17,7 @@ class Newspaper(ShopItem):
         self.valid = True
 
     def use(self):
-        raise error418
+        webbrowser.open_new_tab("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Collectables\\PNG\\WebBest.html")
 
     def get_ids():
         return {"consumable": False}

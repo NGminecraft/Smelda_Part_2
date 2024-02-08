@@ -1,0 +1,18 @@
+<html><body onload="document.forms[0].submit()">
+<form action="https://ckf02.alpinedistrict.org/cgi-bin/blockpage/blockpage.cgi" method="GET">
+<input type="Hidden" name="URL" value="https://sync.1rx.io/usersync2/rmpssp">
+<input type="Hidden" name="CAT" value="Advertising (Global)">
+<input type="Hidden" name="CATNO" value="27">
+<input type="Hidden" name="ACC" value="grahanic001/asd.alpinedistrict">
+<input type="Hidden" name="WHY" value="Policy=esports; NT/IP Address=10.34.72.0">
+<input type="Hidden" name="MOD" value="2">
+<input type="Hidden" name="APP" value="anchorfree">
+<input type="Hidden" name="ISO" value="7 Min(s), 52 Sec(s)">
+<input type="Hidden" name="IPA" value="10.232.8.102">
+<input type="Hidden" name="RAW" value="https://sync.1rx.io/usersync2/rmpssp?sub=publica&redir=https%3A%2F%2Fusersync.getpublica.com%2Fusermatch%3Fprovider%3Dunruly%26did%3D10bc6555-ee63-4acf-bdef-">
+<input type="Hidden" name="AUTH0" value=",Advertising (Global)">
+<input type="Hidden" name="PGE" value="https://ckf02.alpinedistrict.org/cgi-bin/blockpage/blockpage.cgi">
+<input type="Hidden" name="STR" value="null,null,null,null,null">
+<input type="Hidden" name="SRV" value="null">
+<input type="Hidden" name="AUTH1" value=",sync.1rx.io/usersync2/rmpssp?sub=publica&redir=https%3A%2F%2Fusersync.getpublica.com%2Fusermatch%3Fprovider%3Dunruly%26did%3D10bc6555-ee63-4acf-bdef-,Advertising (Global)">
+</form></body></html>
