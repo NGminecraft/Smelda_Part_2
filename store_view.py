@@ -142,11 +142,11 @@ class Level:
             overflow = len(self.inventory) % self.gui_rows != 0
         else:
             overflow = 0
-        items = list(self.inventory.keys())
-        length = len(items)
+        keys = list(self.inventory.keys())
+        length = len(keys)
         for num in range(self.gui_rows):
-            self.gui_layout[num] = items[0:length // self.gui_rows + overflow]
-            del items[0:length // self.gui_rows + overflow]
+            self.gui_layout[num] = keys[0:length // self.gui_rows + overflow]
+            del keys[0:length // self.gui_rows + overflow]
             overflow = max(overflow - 1, 0)
         self.side_length = min(self.gui_height / self.gui_rows, self.width / len(self.gui_layout[0]))
 
