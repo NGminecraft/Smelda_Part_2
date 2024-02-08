@@ -19,6 +19,8 @@ class Player:
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkS.png"), 3)
         self.characterW = pygame.transform.scale_by(pygame.image.load(
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png"), 3)
+        self.money = 100
+        self.inventory = {}
 
     def walk(self, level, speed_mult=1):
         # Move the character
@@ -87,6 +89,12 @@ class Player:
     def set_facing(self, facing):
         # Basic facing setter, may improve later on to protect against invalid inputs
         self.facing = facing
+        
+    def get_money(self):
+        return self.money
+    
+    def add_to_inventory(self, item, count=1):
+        self.inventory[item] = count
 
 
 if __name__ == "__main__":

@@ -4,8 +4,8 @@ import random
 from items import *
 import os
 from items.potions import *
-import importlib
-from copy import deepcopy
+from order import Order
+
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -81,6 +81,8 @@ class Level:
         }
         # This is the variable for storing the current keyframe for tiles with animations
         self.keyframe = 1
+        self.order_handler = Order()
+        self.cart = {}
         self.init_inventory()
 
     def initialize_map_dict(self):
@@ -206,13 +208,32 @@ class Level:
         for index, value in enumerate(self.gui_layout):
             dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
             for i, v in enumerate(value):
-                self.gui_buttons[v] = screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index))
-                
-    def check_gui_click(self, pos):
+                self.gui_buttons[(v)] = screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index))
+        self.gui_buttons["checkout"] = screen.blit(pygame.transform.scale(pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"), (50, 50)), (screen.get_width() - 50, 0))
+
+    def check_gui_click(self, pos, player):
         for i in list(self.gui_buttons.keys()):
             if self.gui_buttons[i].collidepoint(pos):
-                print(i)
-
+                if i == "checkout":
+                    self.checkout(player)
+                    break
+                self.order_handler.add(i)
+    
+    def checkout(self, player):         
+        if len(self.cart) > 0:
+            """
+            total = 0
+            for i in self.cart:
+                if i == "checkout":
+                    break
+                item = i(price=self.cart[i][-1]*100, tier=self.cart[i][-1])
+                total += i().price
+            if player.get_money() >= total:
+                for key in self.cart:
+                    player.add_to_inventory(item, self.cart[key][0])
+                self.cart = {}
+                """
+            pass
 
 # This is so it always runs the game file even if I accidentally try to run this one
 if __name__ == "__main__":

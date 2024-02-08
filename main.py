@@ -18,14 +18,13 @@ clock = pygame.time.Clock()
 main_actor = player.Player()
 # This is our level, using my largest map
 level = lvl.Level(map_file="map.npy", collision_map="BigMapCollision.npy")
-print(level)
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
 level.init_gui(screen)
 
 in_gui = False
-
+button_cooldown = 0
 # Main game loop
 while True:
     # This actually terminates the game, when you try to terminate the game
@@ -40,7 +39,8 @@ while True:
         print(f"FPS: {clock.get_fps()}")
         print(f"Coords: {main_actor.get_coords()}")
     if pygame.mouse.get_pressed()[0]:
-        level.check_gui_click(pygame.mouse.get_pos())
+        level.check_gui_click(pygame.mouse.get_pos(), main_actor)
+        cooldown = 10
     if not in_gui:
         directions = []
         # S key
@@ -90,4 +90,5 @@ while True:
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed
+    button_cooldown = max(button_cooldown - 0.01, 0)
     clock.tick(100)

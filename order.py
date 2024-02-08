@@ -1,9 +1,5 @@
 from items import *
 import warnings
-from items.sword import Sword
-from items.potion import Potion
-from items.shopitem import ShopItem
-
 
 class Order:
     def __init__(self):
