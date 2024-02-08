@@ -82,10 +82,12 @@ class Level:
         self.cart = {}
         self.init_inventory()
 
-    def pygame_multiline(self, screen, text, start):
+    def pygame_multiline(self, screen, text, start, color=(255,255,255)):
         lines = text.split("/n")
+        if type(lines) == int:
+            screen.blit(self.font.render(line, True, color), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
         for linenum, line in enumerate(lines):
-            screen.blit(self.font.render(line, True, (255, 255, 255)), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
+            screen.blit(self.font.render(line, True, color), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
 
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
@@ -202,7 +204,7 @@ class Level:
             # This catches out of bounds collision checks
             return False
 
-    def store_gui(self, screen):
+    def store_gui(self, screen, player):
         back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
         back.fill((0, 0, 0, 220))
         back.set_alpha(220)
@@ -219,34 +221,25 @@ class Level:
             pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
             (50, 50)), (screen.get_width() - 50, 0))
         self.pygame_multiline(screen, str(self.order_handler), (0, 0))
+        color = (255, 255, 255)
+        if player.money <= self.order_handler.order_cost() + self.order_handler.order_tax():
+            color = (255, 0, 0)
+        self.pygame_multiline(screen, f"${str(player.money)}", (screen.get_width()-(len(str(player.money))+1)*15, 50), color)
 
-    def check_gui_click(self, pos, player):
+    def check_gui_click(self, pos, player, screen):
         try:
             for i in list(self.gui_buttons.keys()):
                 if self.gui_buttons[i].collidepoint(pos):
                     if i == "checkout":
-                        self.checkout(player)
+                        self.checkout(player, screen)
                         break
                     self.order_handler.add(i())
                     break
         except AttributeError:
             pass
 
-    def checkout(self, player):
-        if len(self.cart) > 0:
-            """
-            total = 0
-            for i in self.cart:
-                if i == "checkout":
-                    break
-                item = i(price=self.cart[i][-1]*100, tier=self.cart[i][-1])
-                total += i().price
-            if player.get_money() >= total:
-                for key in self.cart:
-                    player.add_to_inventory(item, self.cart[key][0])
-                self.cart = {}
-                """
-            pass
+    def checkout(self, player, screen):
+        self.order_handler.order(player, self, screen)
 
 
 # This is so it always runs the game file even if I accidentally try to run this one

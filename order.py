@@ -49,6 +49,14 @@ class Order:
 
     def order_tax(self):
         return sum(i.calculate_tax() for i in self._full_order)
+    
+    def order(self, player, store, screen):
+        if self.order_cost() + self.order_tax() <= player.money:
+            player.money -= self.order_cost() + self.order_tax()
+            for i in self._full_order:
+                player.add_to_inventory(i)
+            self._full_order = []
+        store.pygame_multiline(screen, f"${str(player.money)}", (screen.get_width()-(len(str(player.money))+1)*15, 50, (255,0,0)))
 
 
 if __name__ == "__main__":
