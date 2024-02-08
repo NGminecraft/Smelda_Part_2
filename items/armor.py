@@ -4,7 +4,7 @@ from shopitem import ShopItem
 
 
 class Armor(ShopItem):
-    def __init__(self, name, price = 100, tier=1, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconShoe.png"):
+    def __init__(self, name="Armor", price = 100, tier=1, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconShoe.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
@@ -20,3 +20,9 @@ class Armor(ShopItem):
     
     def get_ids():
         return {"consumable": False}
+
+    def calculate_price(self):
+        return self.price * self.tier
+
+    def calculate_tax(self):
+        return self.calculate_price() * self.tax

@@ -38,9 +38,9 @@ while True:
     if pressed[pygame.K_p]:
         print(f"FPS: {clock.get_fps()}")
         print(f"Coords: {main_actor.get_coords()}")
-    if pygame.mouse.get_pressed()[0]:
+    if pygame.mouse.get_pressed()[0] and button_cooldown <= 0:
         level.check_gui_click(pygame.mouse.get_pos(), main_actor)
-        cooldown = 10
+        button_cooldown = 10
     if not in_gui:
         directions = []
         # S key
@@ -75,7 +75,7 @@ while True:
     if pressed[pygame.K_p]:
         level.debug = True
         
-    if pressed[pygame.K_TAB]:
+    if pressed[pygame.K_CAPSLOCK]:
         in_gui = True
     else:
         in_gui = False
@@ -89,6 +89,6 @@ while True:
         level.store_gui(screen)
     # Updates everything
     pygame.display.update()
-    # This is technically the basic tick speed
-    button_cooldown = max(button_cooldown - 0.01, 0)
+    # This is technically the basic tick speed`
+    button_cooldown = max(button_cooldown - 1, 0)
     clock.tick(100)

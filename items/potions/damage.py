@@ -4,7 +4,7 @@ from exceptions import *
 
 
 class Damage(Potion):
-    def __init__(self, name, price = 100, tier = 1, image="Legend_of_Zink_Asset_Pack\Legend_of_Zink_Asset_Pack\Menu_Icons\PNG\sprIconHealthJar.png", item_class = "potion"):
+    def __init__(self, name="Damage Potion", price = 100, tier = 1, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconHealthJar.png", item_class = "potion"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
@@ -21,3 +21,10 @@ class Damage(Potion):
 
     def get_ids():
         return {"consumable":True}
+
+
+    def calculate_price(self):
+        return self.price * self.tier
+
+    def calculate_tax(self):
+        return self.calculate_price() * self.tax

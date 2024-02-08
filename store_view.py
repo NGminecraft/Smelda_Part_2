@@ -1,11 +1,8 @@
-import pygame
-import numpy
-import random
-from items import *
 import os
-from items.potions import *
+import random
+import numpy
+import pygame
 from order import Order
-
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -34,7 +31,7 @@ class Level:
     def __init__(self, map_file="map.npy", collision_map="BigMapCollision"):
         # Creates map from passed in map files
         self.map = map_file
-        self.font = pygame.font.init()
+        self.font = pygame.font.Font(size=30)
         self.collision_map = collision_map
         # This gets a background from the background array (see: Level.initialize_background() for details)
         self.backdrop = initialize_background()
@@ -52,10 +49,10 @@ class Level:
         #
         # This is the dictionary that maps each tile name (str) to a subsurface that can be put on the string
         # A number at the end of the string indicates that it is part of an animation (4 keyframes per, no exceptions)
-        
+
         self.time = 255
         self.time_mult = 100 / (60 * 100)
-        
+
         self.items = {
             "Wall": pygame.transform.scale(tileset.subsurface(pygame.Rect(465, 272, 15, 15)), (30, 30)),
             "Cabinet": pygame.transform.rotate(tileset.subsurface(pygame.Rect(513, 257, 30, 30)), 90),
@@ -85,6 +82,11 @@ class Level:
         self.cart = {}
         self.init_inventory()
 
+    def pygame_multiline(self, screen, text, start):
+        lines = text.split("/n")
+        for linenum, line in enumerate(lines):
+            screen.blit(self.font.render(line, True, (255, 255, 255)), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
+
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
         # I have no idea why I leave this as a numpy array file. It works though and saves a bit of processing.
@@ -106,10 +108,10 @@ class Level:
             for column_num, column in enumerate(row):
                 dictionary[(row_num * 30, column_num * 30)] = column
         return dictionary
-    
+
     def init_inventory(self):
         # This guys job is to find all the items in the items folder
-        blacklist = ("shopitem.py", "potion.py") # This is a tuple of all the files to ignore when finding items
+        blacklist = ("shopitem.py", "potion.py")  # This is a tuple of all the files to ignore when finding items
         self.inventory = {}
         selfdir = os.path.dirname(os.path.realpath(__file__))
         folders = (f"{selfdir}\\items\\potions\\", f"{selfdir}\\items\\")
@@ -127,7 +129,7 @@ class Level:
                         else:
                             count = 1
                         self.inventory[classobj] = count
-                        
+
     def init_gui(self, screen):
         self.gui_height = screen.get_height() // 2
         self.width = screen.get_width()
@@ -147,6 +149,7 @@ class Level:
             del items[0:length // self.gui_rows + overflow]
             overflow = max(overflow - 1, 0)
         self.side_length = min(self.gui_height / self.gui_rows, self.width / len(self.gui_layout[0]))
+
     def draw_background(self, screen):
         # It puts the background on the screen that's really it
         screen.blit(pygame.transform.scale(pygame.surfarray.make_surface(self.backdrop), (816, 816)), (0, 0))
@@ -198,7 +201,7 @@ class Level:
         except KeyError:
             # This catches out of bounds collision checks
             return False
-        
+
     def store_gui(self, screen):
         back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
         back.fill((0, 0, 0, 220))
@@ -208,8 +211,14 @@ class Level:
         for index, value in enumerate(self.gui_layout):
             dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
             for i, v in enumerate(value):
-                self.gui_buttons[(v)] = screen.blit(pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), ((self.width / len(value) * i) + self.side_length / 6*dif, (screen.get_height() // 2)+self.side_length*index))
-        self.gui_buttons["checkout"] = screen.blit(pygame.transform.scale(pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"), (50, 50)), (screen.get_width() - 50, 0))
+                self.gui_buttons[v] = screen.blit(
+                    pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), (
+                        (self.width / len(value) * i) + self.side_length / 6 * dif,
+                        (screen.get_height() // 2) + self.side_length * index))
+        self.gui_buttons["checkout"] = screen.blit(pygame.transform.scale(
+            pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
+            (50, 50)), (screen.get_width() - 50, 0))
+        self.pygame_multiline(screen, str(self.order_handler), (0, 0))
 
     def check_gui_click(self, pos, player):
         for i in list(self.gui_buttons.keys()):
@@ -217,9 +226,10 @@ class Level:
                 if i == "checkout":
                     self.checkout(player)
                     break
-                self.order_handler.add(i)
-    
-    def checkout(self, player):         
+                self.order_handler.add(i())
+                break
+
+    def checkout(self, player):
         if len(self.cart) > 0:
             """
             total = 0
@@ -234,6 +244,7 @@ class Level:
                 self.cart = {}
                 """
             pass
+
 
 # This is so it always runs the game file even if I accidentally try to run this one
 if __name__ == "__main__":
