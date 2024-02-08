@@ -19,7 +19,7 @@ class Player:
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkS.png"), 3)
         self.characterW = pygame.transform.scale_by(pygame.image.load(
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png"), 3)
-        self.money = 100
+        self.money = 110
         self.inventory = {}
 
     def walk(self, level, speed_mult=1):
@@ -95,6 +95,43 @@ class Player:
     
     def add_to_inventory(self, item, count=1):
         self.inventory[item] = count
+        
+    def inventory_gui(self, screen, player):
+        back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
+        back.fill((0, 0, 0, 220))
+        back.set_alpha(220)
+        screen.blit(back, (0, 0))
+        self.gui_buttons = {}
+        for index, value in enumerate(self.gui_layout):
+            dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
+            for i, v in enumerate(value):
+                self.gui_buttons[v] = screen.blit(
+                    pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), (
+                        (self.width / len(value) * i) + self.side_length / 6 * dif,
+                        (screen.get_height() // 2) + self.side_length * index))
+        self.gui_buttons["checkout"] = screen.blit(pygame.transform.scale(
+            pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
+            (50, 50)), (screen.get_width() - 50, 0))
+        self.pygame_multiline(screen, str(self.order_handler), (0, 0))
+        color = (255, 255, 255)
+        if player.money <= self.order_handler.order_cost() + self.order_handler.order_tax():
+            color = (255, 0, 0)
+        self.pygame_multiline(screen, f"${str(player.money)}", (screen.get_width()-(len(str(player.money))+1)*15, 50), color)
+
+    def check_inventory_click(self, pos, player, screen):
+        try:
+            for i in list(self.gui_buttons.keys()):
+                if self.gui_buttons[i].collidepoint(pos):
+                    if i == "checkout":
+                        self.checkout(player, screen)
+                        break
+                    self.order_handler.add(i())
+                    break
+        except AttributeError:
+            pass
+
+    def checkout(self, player, screen):
+        self.order_handler.order(player, self, screen)
 
 
 if __name__ == "__main__":

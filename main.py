@@ -39,7 +39,7 @@ while True:
         print(f"FPS: {clock.get_fps()}")
         print(f"Coords: {main_actor.get_coords()}")
     if pygame.mouse.get_pressed()[0] and button_cooldown <= 0:
-        level.check_gui_click(pygame.mouse.get_pos(), main_actor)
+        level.check_gui_click(pygame.mouse.get_pos(), main_actor, screen)
         button_cooldown = 10
     if not in_gui:
         directions = []
@@ -86,7 +86,7 @@ while True:
     # Adds the character
     level.draw_character(screen, main_actor)
     if in_gui:
-        level.store_gui(screen)
+        level.store_gui(screen, main_actor)
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed`
