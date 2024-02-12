@@ -80,7 +80,6 @@ class Level:
         # This is the variable for storing the current keyframe for tiles with animations
         self.keyframe = 1
         self.order_handler = Order()
-        self.cart = {}
         self.init_inventory()
         self.menu = gui.Gui(screen, self.inventory, "checkout", pygame.transform.scale(
             pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
@@ -88,9 +87,6 @@ class Level:
 
     def pygame_multiline(self, screen, text, start, color=(255, 255, 255)):
         lines = text.split("/n")
-        if type(lines) == int:
-            screen.blit(self.font.render(line, True, color),
-                        (start[0], start[1] + (self.font.get_height() + 10) * linenum))
         for linenum, line in enumerate(lines):
             screen.blit(self.font.render(line, True, color),
                         (start[0], start[1] + (self.font.get_height() + 10) * linenum))
@@ -137,26 +133,6 @@ class Level:
                         else:
                             count = 1
                         self.inventory[classobj] = count
-
-    def init_gui(self, screen):
-        self.gui_height = screen.get_height() // 2
-        self.width = screen.get_width()
-        self.gui_rows = 2
-        self.gui_layout = []
-        keys = list(self.inventory.keys())
-        for i in range(self.gui_rows):
-            self.gui_layout.append([])
-        if len(self.inventory) % self.gui_rows != 0:
-            overflow = len(self.inventory) % self.gui_rows != 0
-        else:
-            overflow = 0
-        keys = list(self.inventory.keys())
-        length = len(keys)
-        for num in range(self.gui_rows):
-            self.gui_layout[num] = keys[0:length // self.gui_rows + overflow]
-            del keys[0:length // self.gui_rows + overflow]
-            overflow = max(overflow - 1, 0)
-        self.side_length = min(self.gui_height / self.gui_rows, self.width / len(self.gui_layout[0]))
 
     def draw_background(self, screen):
         # It puts the background on the screen that's really it

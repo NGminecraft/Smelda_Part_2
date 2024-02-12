@@ -20,7 +20,6 @@ level = lvl.Level(screen, map_file="map.npy", collision_map="BigMapCollision.npy
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
-level.init_gui(screen)
 
 in_gui = False
 button_cooldown = 0
