@@ -4,7 +4,8 @@ import pygame
 
 
 class Arrow(ShopItem):
-    def __init__(self, name="Arrow", price=100, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconMiniArrow.png"):
+    def __init__(self, name="Arrow", price=100,
+                 image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconMiniArrow.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
@@ -18,7 +19,7 @@ class Arrow(ShopItem):
         pass
 
     def get_ids():
-        return {"consumable":True}
+        return {"consumable": True}
 
     def calculate_price(self):
         return self.price

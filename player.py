@@ -1,6 +1,7 @@
 import pygame
 import gui
 
+
 class Player:
     # This is the class for storing players, and player like objects
     def __init__(self, screen):
@@ -92,20 +93,20 @@ class Player:
     def set_facing(self, facing):
         # Basic facing setter, may improve later on to protect against invalid inputs
         self.facing = facing
-        
+
     def get_money(self):
         return self.money
-    
+
     def add_to_inventory(self, item, count=1):
         if item in self.inventory:
             self.inventory[item] += count
         else:
             self.inventory[item] = 1
             self.inv_gui.items.append(item)
-        
+
     def inventory_gui(self):
         self.inv_gui.gui(self.screen)
-        
+
 
 if __name__ == "__main__":
     import main

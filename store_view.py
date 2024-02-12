@@ -82,19 +82,23 @@ class Level:
         self.order_handler = Order()
         self.cart = {}
         self.init_inventory()
-        self.menu = gui.Gui(screen, self.inventory, "checkout", pygame.transform.scale(pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),(50, 50)), (screen.get_width() - 50, 0), True)
+        self.menu = gui.Gui(screen, self.inventory, "checkout", pygame.transform.scale(
+            pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
+            (50, 50)), (screen.get_width() - 50, 0), True)
 
-    def pygame_multiline(self, screen, text, start, color=(255,255,255)):
+    def pygame_multiline(self, screen, text, start, color=(255, 255, 255)):
         lines = text.split("/n")
         if type(lines) == int:
-            screen.blit(self.font.render(line, True, color), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
+            screen.blit(self.font.render(line, True, color),
+                        (start[0], start[1] + (self.font.get_height() + 10) * linenum))
         for linenum, line in enumerate(lines):
-            screen.blit(self.font.render(line, True, color), (start[0], start[1] + (self.font.get_height() + 10) * linenum))
+            screen.blit(self.font.render(line, True, color),
+                        (start[0], start[1] + (self.font.get_height() + 10) * linenum))
 
     def initialize_map_dict(self):
         # This takes the map file and returns the dictionary extrapolated from it.
         # I have no idea why I leave this as a numpy array file. It works though and saves a bit of processing.
-        # This file is pregenerated, that's why it exists
+        # This file is pre-generated, that's why it exists
         arr = numpy.load(self.map)
         dictionary = {}
         # This iterates through the array from the numpy file, adding each item to a dictionary
@@ -208,7 +212,9 @@ class Level:
             return False
 
     def store_gui(self, screen, player):
-        self.menu.gui(screen, sufficent_money=player.money>=self.order_handler.order_cost()+self.order_handler.order_tax(), money=player.money, text_function=self.pygame_multiline, order = self.order_handler)
+        self.menu.gui(screen,
+                      sufficent_money=player.money >= self.order_handler.order_cost() + self.order_handler.order_tax(),
+                      money=player.money, text_function=self.pygame_multiline, order=self.order_handler)
 
     def check_gui_click(self, pos, player, screen):
         clicked = self.menu.check_gui_click(pos)

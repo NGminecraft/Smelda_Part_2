@@ -1,4 +1,5 @@
 import sys
+
 # This sketchy looking code allows me to import modules from parent directories
 a = sys.path[0].split('\\')
 a.append("items")
@@ -8,8 +9,6 @@ sys.path.append("\\".join(a))
 import pygame
 import store_view as lvl
 import player as player
-from shop import Shop
-
 # Setting up the pygame window
 pygame.init()
 screen = pygame.display.set_mode((816, 816))
@@ -58,7 +57,7 @@ while True:
             directions.append(0)
         sprint = 1
         if pressed[pygame.K_LSHIFT]:
-            sprint = sprint*2
+            sprint = sprint * 2
         if pressed[pygame.K_RSHIFT]:
             sprint = sprint * 2
         main_actor.crouching = 1
@@ -70,11 +69,11 @@ while True:
             main_actor.crouching = 1
         for i in directions:
             main_actor.set_facing(i)
-            main_actor.walk(level, 1/len(directions)*sprint)
-    
+            main_actor.walk(level, 1 / len(directions) * sprint)
+
     if pressed[pygame.K_p]:
         level.debug = True
-        
+
     if pressed[pygame.K_CAPSLOCK]:
         in_gui = True
     else:

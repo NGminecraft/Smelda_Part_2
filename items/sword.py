@@ -4,7 +4,8 @@ from shopitem import ShopItem
 
 
 class Sword(ShopItem):
-    def __init__(self, name="sword", price=100, tier=1, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconSword.png"):
+    def __init__(self, name="sword", price=100, tier=1,
+                 image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Menu_Icons\\PNG\\sprIconSword.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price
@@ -17,7 +18,7 @@ class Sword(ShopItem):
 
     def use(self):
         pass
-    
+
     def get_ids():
         return {"consumable": False}
 

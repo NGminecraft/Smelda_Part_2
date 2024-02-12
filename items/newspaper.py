@@ -6,7 +6,8 @@ import pygame
 
 
 class Newspaper(ShopItem):
-    def __init__(self, name="The Daily Newspaper", price=100, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDAssignAButton.png"):
+    def __init__(self, name="The Daily Newspaper", price=100,
+                 image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDAssignAButton.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price

@@ -4,7 +4,8 @@ import pygame
 
 
 class Teapotofbrokenreality(ShopItem):
-    def __init__(self, name="Teapot of Broken Realities", price=100, image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Props\\PNG\\sprFancyPot.png"):
+    def __init__(self, name="Teapot of Broken Realities", price=100,
+                 image="Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\Props\\PNG\\sprFancyPot.png"):
         self.name = str(name)
         if type(price) == float or type(price) == int:
             self.price = price

@@ -3,7 +3,8 @@ from copy import deepcopy
 
 
 class Gui:
-    def __init__(self, screen, items, special_flag=None, special_flag_surface=None, special_flag_location=None, show_money=True):
+    def __init__(self, screen, items, special_flag=None, special_flag_surface=None, special_flag_location=None,
+                 show_money=True):
         self.screen = screen
         self.show_money = show_money
         if type(items) == dict:
@@ -16,16 +17,14 @@ class Gui:
             self.special_flag_location = special_flag_location
         else:
             self.special_flag = False
-        # Create basic veriables for GUI
+        # Create basic variables for GUI
         self.gui_height = self.screen.get_height() // 2
         self.width = self.screen.get_width()
         self.gui_rows = 2
         self.gui_layout = []
 
-        
-        
-    def gui(self, screen, sufficent_money = True, money=0, text_function=None, order=None):
-        if not self.items:        
+    def gui(self, screen, sufficent_money=True, money=0, text_function=None, order=None):
+        if not self.items:
             back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
             back.fill((0, 0, 0, 220))
             back.set_alpha(220)
@@ -56,7 +55,7 @@ class Gui:
             for i, v in enumerate(value):
                 self.gui_buttons[v] = screen.blit(
                     pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), (
-                        (self.width / len(value))*i + self.side_length / 6 * dif,
+                        (self.width / len(value)) * i + self.side_length / 6 * dif,
                         (screen.get_height() // 2) + self.side_length * index))
         if self.special_flag:
             self.gui_buttons[self.special_flag] = screen.blit(self.special_flag_surface, self.special_flag_location)
@@ -66,7 +65,7 @@ class Gui:
             color = (255, 255, 255)
             if not sufficent_money:
                 color = (255, 0, 0)
-            text_function(screen, f"${str(money)}", (screen.get_width()-(len(str(money))+1)*15, 50), color)
+            text_function(screen, f"${str(money)}", (screen.get_width() - (len(str(money)) + 1) * 15, 50), color)
 
     def check_gui_click(self, pos):
         try:
