@@ -15,9 +15,9 @@ pygame.init()
 screen = pygame.display.set_mode((816, 816))
 clock = pygame.time.Clock()
 # This builds the player, Hopefully in a way I can make multiple later on
-main_actor = player.Player()
+main_actor = player.Player(screen)
 # This is our level, using my largest map
-level = lvl.Level(map_file="map.npy", collision_map="BigMapCollision.npy")
+level = lvl.Level(screen, map_file="map.npy", collision_map="BigMapCollision.npy")
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
@@ -79,6 +79,10 @@ while True:
         in_gui = True
     else:
         in_gui = False
+    if pressed[pygame.K_e]:
+        inv_gui = True
+    else:
+        inv_gui = False
     # Using my background as the bottom layer
     level.draw_background(screen)
     # Places the level on top of that
@@ -87,6 +91,8 @@ while True:
     level.draw_character(screen, main_actor)
     if in_gui:
         level.store_gui(screen, main_actor)
+    if inv_gui:
+        main_actor.inventory_gui()
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed`

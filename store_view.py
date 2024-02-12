@@ -3,6 +3,7 @@ import random
 import numpy
 import pygame
 from order import Order
+import gui
 
 # colors that the background creator pulls from
 BACK_COLORS = ((80, 198, 0), (0, 190, 9), (23, 198, 0))
@@ -28,7 +29,7 @@ def initialize_background(static=False):
 
 
 class Level:
-    def __init__(self, map_file="map.npy", collision_map="BigMapCollision"):
+    def __init__(self, screen, map_file="map.npy", collision_map="BigMapCollision"):
         # Creates map from passed in map files
         self.map = map_file
         self.font = pygame.font.Font(size=30)
@@ -81,6 +82,7 @@ class Level:
         self.order_handler = Order()
         self.cart = {}
         self.init_inventory()
+        self.menu = gui.Gui(screen, self.inventory, "checkout", pygame.transform.scale(pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),(50, 50)), (screen.get_width() - 50, 0), True)
 
     def pygame_multiline(self, screen, text, start, color=(255,255,255)):
         lines = text.split("/n")
@@ -161,7 +163,8 @@ class Level:
 
     def draw_character(self, screen, player):
         # This puts the character on the screen utilizing its builtin get player method
-        screen.blit(player.get_player(), self.center)
+        img = player.get_player()
+        screen.blit(img, self.center)
 
     def place_items(self, screen, player):
         # This puts all the items on the screen in their locations in respect to the players location
@@ -205,41 +208,14 @@ class Level:
             return False
 
     def store_gui(self, screen, player):
-        back = pygame.surface.Surface((screen.get_width(), screen.get_height()))
-        back.fill((0, 0, 0, 220))
-        back.set_alpha(220)
-        screen.blit(back, (0, 0))
-        self.gui_buttons = {}
-        for index, value in enumerate(self.gui_layout):
-            dif = abs(len(value) - len(self.gui_layout[max(index - 1, 0)]))
-            for i, v in enumerate(value):
-                self.gui_buttons[v] = screen.blit(
-                    pygame.transform.scale(v(name="Demo").image, (self.side_length, self.side_length)), (
-                        (self.width / len(value) * i) + self.side_length / 6 * dif,
-                        (screen.get_height() // 2) + self.side_length * index))
-        self.gui_buttons["checkout"] = screen.blit(pygame.transform.scale(
-            pygame.image.load("Legend_of_Zink_Asset_Pack\\Legend_of_Zink_Asset_Pack\\HUD\\PNG\\sprHUDCent.png"),
-            (50, 50)), (screen.get_width() - 50, 0))
-        self.pygame_multiline(screen, str(self.order_handler), (0, 0))
-        color = (255, 255, 255)
-        if player.money <= self.order_handler.order_cost() + self.order_handler.order_tax():
-            color = (255, 0, 0)
-        self.pygame_multiline(screen, f"${str(player.money)}", (screen.get_width()-(len(str(player.money))+1)*15, 50), color)
+        self.menu.gui(screen, sufficent_money=player.money>=self.order_handler.order_cost()+self.order_handler.order_tax(), money=player.money, text_function=self.pygame_multiline, order = self.order_handler)
 
     def check_gui_click(self, pos, player, screen):
-        try:
-            for i in list(self.gui_buttons.keys()):
-                if self.gui_buttons[i].collidepoint(pos):
-                    if i == "checkout":
-                        self.checkout(player, screen)
-                        break
-                    self.order_handler.add(i())
-                    break
-        except AttributeError:
-            pass
-
-    def checkout(self, player, screen):
-        self.order_handler.order(player, self, screen)
+        clicked = self.menu.check_gui_click(pos)
+        if clicked != "checkout":
+            self.order_handler.add(clicked)
+        else:
+            self.order_handler.order(player, self, screen)
 
 
 # This is so it always runs the game file even if I accidentally try to run this one
