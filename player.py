@@ -20,7 +20,7 @@ class Player:
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkS.png"), 3)
         self.characterW = pygame.transform.scale_by(pygame.image.load(
             "Legend_of_Zink_Asset_Pack/Legend_of_Zink_Asset_Pack/Zink/PNG/Zink_Only/sprZinkWalkW.png"), 3)
-        self.money = 110000
+        self.money = 1100
         self.inventory = {}
         self.font = pygame.font.Font()
         self.screen = screen
