@@ -40,11 +40,11 @@ class ShopItem(ABC):
     @abstractmethod
     def use():
         raise NotImplemented
-    
+
     @abstractmethod
     def calculate_price(self):
         return self.price
-    
+
     @abstractmethod
     def calculate_tax(self):
         return self.calculate_price() * self.tax

@@ -1,4 +1,5 @@
 import sys
+
 # This sketchy looking code allows me to import modules from parent directories
 a = sys.path[0].split('\\')
 a.append("items")
@@ -8,20 +9,17 @@ sys.path.append("\\".join(a))
 import pygame
 import store_view as lvl
 import player as player
-from shop import Shop
-
 # Setting up the pygame window
 pygame.init()
 screen = pygame.display.set_mode((816, 816))
 clock = pygame.time.Clock()
 # This builds the player, Hopefully in a way I can make multiple later on
-main_actor = player.Player()
+main_actor = player.Player(screen)
 # This is our level, using my largest map
-level = lvl.Level(map_file="map.npy", collision_map="BigMapCollision.npy")
+level = lvl.Level(screen, map_file="map.npy", collision_map="BigMapCollision.npy")
 # This places the first items before putting everything else on top.
 level.place_items(screen, main_actor)
 
-level.init_gui(screen)
 
 in_gui = False
 button_cooldown = 0
@@ -58,7 +56,7 @@ while True:
             directions.append(0)
         sprint = 1
         if pressed[pygame.K_LSHIFT]:
-            sprint = sprint*2
+            sprint = sprint * 2
         if pressed[pygame.K_RSHIFT]:
             sprint = sprint * 2
         main_actor.crouching = 1
@@ -70,15 +68,19 @@ while True:
             main_actor.crouching = 1
         for i in directions:
             main_actor.set_facing(i)
-            main_actor.walk(level, 1/len(directions)*sprint)
-    
+            main_actor.walk(level, 1 / len(directions) * sprint)
+
     if pressed[pygame.K_p]:
         level.debug = True
-        
+
     if pressed[pygame.K_CAPSLOCK]:
         in_gui = True
     else:
         in_gui = False
+    if pressed[pygame.K_e]:
+        inv_gui = True
+    else:
+        inv_gui = False
     # Using my background as the bottom layer
     level.draw_background(screen)
     # Places the level on top of that
@@ -87,6 +89,8 @@ while True:
     level.draw_character(screen, main_actor)
     if in_gui:
         level.store_gui(screen, main_actor)
+    if inv_gui:
+        main_actor.inventory_gui()
     # Updates everything
     pygame.display.update()
     # This is technically the basic tick speed`
